@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - MODEL_NLU=${MODEL_NLU}
+      - MODEL_GENERATE=${MODEL_GENERATE}
+      - MODEL_CHAT=${MODEL_CHAT}
+    ports:
+      - "8000:8000"
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    volumes:
+      - ./sample_data:/app/sample_data:ro
